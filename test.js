@@ -14,6 +14,11 @@ var tests = [{
     fixture: '@context size { h1 { size: 100px } } h2 { size: 100px }',
     expected: 'h1 { width: 100px; height: 100px } h2 { size: 100px }',
     options: {size: require('postcss-size')}
+}, {
+    message: 'should contextualize across a whole file',
+    fixture: '@context size; h1 { size: 100px } h2 { size: 100px }',
+    expected: 'h1 { width: 100px; height: 100px } h2 { width: 100px; height: 100px }',
+    options: {size: require('postcss-size')}
 }];
 
 function process (css, options) {

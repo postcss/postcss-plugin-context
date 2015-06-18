@@ -70,6 +70,26 @@ h1 {
 }
 ```
 
+Note that a context may also be defined across a whole file; if you specify
+`@context` without curly braces. For example:
+
+```css
+@context size;
+
+h1 {
+    size: 100px;
+}
+```
+
+Outputs:
+
+```css
+h1 {
+    width: 100px;
+    height: 100px;
+}
+```
+
 ## API
 
 ### context(plugins)

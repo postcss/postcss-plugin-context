@@ -20,7 +20,11 @@ module.exports = postcss.plugin(plugin, function (plugins) {
             comma(rule.params).forEach(function (ctx) {
                 var method = getPlugin(ctx);
                 if (method) {
-                    method(rule);
+                    if (rule.nodes) {
+                        method(rule);
+                    } else {
+                        method(css);
+                    }
                     rule.each(function (r) { r.moveBefore(rule); });
                 } else {
                     var err = 'No context was found for "' + ctx + '".';
