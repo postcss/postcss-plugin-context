@@ -1,3 +1,8 @@
+# 1.2.0
+
+* Plugins consumed by `postcss-plugin-context` are now passed the `Result`
+  from PostCSS as well as the CSS AST.
+
 # 1.1.0
 
 * Adds support for defining a context across a whole file.
