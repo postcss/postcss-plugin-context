@@ -56,3 +56,16 @@ test('should use the postcss plugin api', function (t) {
     t.ok(plugin().postcssVersion, 'should be able to access version');
     t.equal(plugin().postcssPlugin, name, 'should be able to access name');
 });
+
+test('should receive warnings from result object', function (t) {
+    t.plan(2);
+    var options = {
+        inline: require('postcss-import')({
+            path: [__dirname]
+        })
+    };
+    postcss(plugin(options)).process('@context inline { @import "./fixtures/empty"; }').then(function (result) {
+        t.equal(result.css, '', 'should have empty output');
+        t.equal(result.warnings().length, 1, 'should have warning from postcss-import');
+    });
+});
