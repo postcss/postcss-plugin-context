@@ -12,7 +12,7 @@ module.exports = postcss.plugin(plugin, function (plugins) {
         })[0]];
     };
 
-    return function (css) {
+    return function (css, result) {
         if (Object.prototype.toString.call(plugins) !== '[object Object]') {
             throw new Error(plugin + ' cannot be called on a non-object');
         }
@@ -21,9 +21,9 @@ module.exports = postcss.plugin(plugin, function (plugins) {
                 var method = getPlugin(ctx);
                 if (method) {
                     if (rule.nodes) {
-                        method(rule);
+                        method(rule, result);
                     } else {
-                        method(css);
+                        method(css, result);
                     }
                     rule.each(function (r) { r.moveBefore(rule); });
                 } else {
