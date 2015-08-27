@@ -1,3 +1,7 @@
+# 2.0.0
+
+* Upgraded to PostCSS 5.0.
+
 # 1.2.0
 
 * Plugins consumed by `postcss-plugin-context` are now passed the `Result`

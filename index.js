@@ -7,8 +7,8 @@ var plugin = 'postcss-plugin-context';
 module.exports = postcss.plugin(plugin, function (plugins) {
 
     var getPlugin = function (name) {
-        return plugins[Object.keys(plugins).filter(function (plugin) {
-            return name === plugin;
+        return plugins[Object.keys(plugins).filter(function (p) {
+            return name === p;
         })[0]];
     };
 
@@ -16,22 +16,28 @@ module.exports = postcss.plugin(plugin, function (plugins) {
         if (Object.prototype.toString.call(plugins) !== '[object Object]') {
             throw new Error(plugin + ' cannot be called on a non-object');
         }
-        css.eachAtRule('context', function (rule) {
+        css.walkAtRules('context', function (rule) {
             comma(rule.params).forEach(function (ctx) {
                 var method = getPlugin(ctx);
+                if (method.postcss) {
+                    method = method.postcss;
+                }
                 if (method) {
                     if (rule.nodes) {
                         method(rule, result);
                     } else {
                         method(css, result);
                     }
-                    rule.each(function (r) { r.moveBefore(rule); });
+                    rule.each(function (r) {
+                        r.remove();
+                        rule.parent.insertBefore(rule, r);
+                    });
                 } else {
                     var err = 'No context was found for "' + ctx + '".';
                     throw rule.error(err, {plugin: plugin});
                 }
             });
-            rule.removeSelf();
+            rule.remove();
         });
-    }
+    };
 });
